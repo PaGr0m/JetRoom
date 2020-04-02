@@ -11,25 +11,28 @@ public class Console {
     private static Scanner scanner = new Scanner(System.in);
 
     public static void run() {
-        operationsWithMainMenu();
+        ConsoleIO consoleIO = new ConsoleIO(System.in, System.out);
+        TodoUtility todoUtility = new TodoUtility(Constants.PATH_TO_DATA, consoleIO);
+        operationsWithMainMenu(todoUtility);
     }
 
-    private static void operationsWithMainMenu() {
+    private static void operationsWithMainMenu(TodoUtility todoUtility) {
         while (true) {
             printMenuFiles();
-            MenuOperation menuOperation = MenuOperation.valueOf(getMenuOperationNumber());
+            MenuOperation menuOperation = MenuOperation.valueOf(
+                    getMenuOperationNumber(Console::printMenuFiles));
 
             switch (menuOperation) {
                 case CREATE:
-                    TodoUtility.create();
+                    todoUtility.create();
                     break;
 
                 case SHOW:
-                    TodoUtility.show();
+                    todoUtility.show();
                     break;
 
                 case OPEN:
-                    operationsWithCurrentFile();
+                    operationsWithCurrentFile(todoUtility);
                     break;
 
                 case EXIT:
@@ -44,37 +47,38 @@ public class Console {
         }
     }
 
-    private static void operationsWithCurrentFile() {
+    private static void operationsWithCurrentFile(TodoUtility todoUtility) {
         boolean exit = false;
-        File file = TodoUtility.open();
+        File file = todoUtility.open();
 
         do {
             printMenuWithCurrentFile();
-            TodoFileOperation fileOperation = TodoFileOperation.valueOf(getFileMenuOperationNumber());
+            TodoFileOperation fileOperation = TodoFileOperation.valueOf(
+                    getMenuOperationNumber(Console::printMenuWithCurrentFile));
 
             switch (fileOperation) {
                 case ADD:
-                    TodoUtility.addBusinessToTodoList(file);
+                    todoUtility.addBusinessToTodoList(file);
                     break;
 
                 case DELETE:
-                    TodoUtility.deleteBusinessFromTodoList(file);
+                    todoUtility.deleteBusinessFromTodoList(file);
                     break;
 
                 case ACTIVATE_BUSINESS:
-                    TodoUtility.activateBusiness(file);
+                    todoUtility.activateBusiness(file);
                     break;
 
                 case DEACTIVATE_BUSINESS:
-                    TodoUtility.deactivateBusiness(file);
+                    todoUtility.deactivateBusiness(file);
                     break;
 
                 case SHOW:
-                    TodoUtility.show(file);
+                    todoUtility.show(file);
                     break;
 
                 case ACTIVE:
-                    TodoUtility.getActiveBusiness(file);
+                    todoUtility.getActiveBusiness(file);
                     break;
 
                 case EXIT:
@@ -119,20 +123,10 @@ public class Console {
         }
     }
 
-    private static int getMenuOperationNumber() {
+    private static int getMenuOperationNumber(Runnable printMenu) {
         while (!scanner.hasNextInt()) {
             System.out.println(Constants.INCORRECT_INPUT);
-            printMenuFiles();
-            scanner.next();
-        }
-
-        return scanner.nextInt();
-    }
-
-    private static int getFileMenuOperationNumber() {
-        while (!scanner.hasNextInt()) {
-            System.out.println(Constants.INCORRECT_INPUT);
-            printMenuWithCurrentFile();
+            printMenu.run();
             scanner.next();
         }
 

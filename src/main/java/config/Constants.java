@@ -17,7 +17,7 @@ public final class Constants {
     public static final String JSON_READ_FAILED = "Failed read from json !";
     public static final String JSON_WRITE_FAILED = "Failed write to json !";
 
-    public static final String PATH_TO_DATA = "data";
+    public static final String PATH_TO_DATA = "src/main/resources/json";
     public static final String FILE_EXTENSION = ".json";
 
     public static final String BUSINESS_ACTIVE_LIST = "Active business: ";
