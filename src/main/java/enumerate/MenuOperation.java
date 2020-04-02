@@ -7,8 +7,8 @@ public enum MenuOperation {
     CREATE(1),
     SHOW(2),
     OPEN(3),
-    ADD(4),
     EXIT(0),
+    DEFAULT(-1),
     ;
 
     private int value;
@@ -19,13 +19,13 @@ public enum MenuOperation {
     }
 
     static {
-        for (MenuOperation pageType : MenuOperation.values()) {
-            map.put(pageType.value, pageType);
+        for (MenuOperation menuType : MenuOperation.values()) {
+            map.put(menuType.value, menuType);
         }
     }
 
-    public static MenuOperation valueOf(int pageType) {
-        return map.get(pageType);
+    public static MenuOperation valueOf(int menuType) {
+        return map.getOrDefault(menuType, DEFAULT);
     }
 
     public int getValue() {
