@@ -9,13 +9,16 @@ import java.util.Scanner;
 
 public class Console {
     private static Scanner scanner = new Scanner(System.in);
+    private static ConsoleIO consoleIO = new ConsoleIO(System.in, System.out);
 
     public static void run() {
-        ConsoleIO consoleIO = new ConsoleIO(System.in, System.out);
         TodoUtility todoUtility = new TodoUtility(Constants.PATH_TO_DATA, consoleIO);
         operationsWithMainMenu(todoUtility);
     }
 
+    /**
+     * Основное меню
+     */
     private static void operationsWithMainMenu(TodoUtility todoUtility) {
         while (true) {
             printMenuFiles();
@@ -39,7 +42,7 @@ public class Console {
                     return;
 
                 case DEFAULT:
-                    System.out.println(Constants.OPERATION_NOT_FOUND);
+                    consoleIO.print(Constants.OPERATION_NOT_FOUND);
                     break;
             }
 
@@ -47,9 +50,16 @@ public class Console {
         }
     }
 
+    /**
+     * Меню файла
+     */
     private static void operationsWithCurrentFile(TodoUtility todoUtility) {
         boolean exit = false;
         File file = todoUtility.open();
+
+        if (file == null) {
+            return;
+        }
 
         do {
             printMenuWithCurrentFile();
@@ -58,19 +68,19 @@ public class Console {
 
             switch (fileOperation) {
                 case ADD:
-                    todoUtility.addBusinessToTodoList(file);
+                    todoUtility.addTaskToTodoList(file);
                     break;
 
                 case DELETE:
-                    todoUtility.deleteBusinessFromTodoList(file);
+                    todoUtility.deleteTaskFromTodoList(file);
                     break;
 
                 case ACTIVATE_BUSINESS:
-                    todoUtility.activateBusiness(file);
+                    todoUtility.activateTask(file);
                     break;
 
                 case DEACTIVATE_BUSINESS:
-                    todoUtility.deactivateBusiness(file);
+                    todoUtility.deactivateTask(file);
                     break;
 
                 case SHOW:
@@ -78,7 +88,7 @@ public class Console {
                     break;
 
                 case ACTIVE:
-                    todoUtility.getActiveBusiness(file);
+                    todoUtility.getActiveTask(file);
                     break;
 
                 case EXIT:
@@ -91,24 +101,27 @@ public class Console {
     }
 
     private static void printMenuFiles() {
-        System.out.println("Console menu:");
-        System.out.println("1. Create");
-        System.out.println("2. Show todo-lists");
-        System.out.println("3. Open todo-list");
-        System.out.println("0. Exit");
+        consoleIO.print("Console menu:");
+        consoleIO.print("1. Create");
+        consoleIO.print("2. Show todo-lists");
+        consoleIO.print("3. Open todo-list");
+        consoleIO.print("0. Exit");
     }
 
     private static void printMenuWithCurrentFile() {
-        System.out.println("TodoFile menu:");
-        System.out.println("1. Add business to todo-list");
-        System.out.println("2. Delete business from todo-list");
-        System.out.println("3. Activate business");
-        System.out.println("4. Deactivate business");
-        System.out.println("5. Show business");
-        System.out.println("6. Show active business");
-        System.out.println("0. Exit");
+        consoleIO.print("TodoFile menu:");
+        consoleIO.print("1. Add task to todo-list");
+        consoleIO.print("2. Delete task from todo-list");
+        consoleIO.print("3. Activate task");
+        consoleIO.print("4. Deactivate task");
+        consoleIO.print("5. Show task");
+        consoleIO.print("6. Show active task");
+        consoleIO.print("0. Exit");
     }
 
+    /**
+     * Очистка консоли при запуске скритпа из shell
+     */
     private static void clearConsole() {
         try {
             final String os = System.getProperty("os.name");
@@ -119,13 +132,19 @@ public class Console {
                 Runtime.getRuntime().exec("clear");
             }
         } catch (Exception e) {
-            System.out.println("We have a problem !");
+            consoleIO.print("We have a problem with console !");
         }
     }
 
+    /**
+     * Проверка на корректность ввода данных с консоли
+     *
+     * @param printMenu - метод, который выводит необходимое меню
+     * @return - считанное int значение с консоли
+     */
     private static int getMenuOperationNumber(Runnable printMenu) {
         while (!scanner.hasNextInt()) {
-            System.out.println(Constants.INCORRECT_INPUT);
+            consoleIO.print(Constants.INCORRECT_INPUT);
             printMenu.run();
             scanner.next();
         }

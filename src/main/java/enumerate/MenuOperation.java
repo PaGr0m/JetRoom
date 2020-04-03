@@ -3,6 +3,9 @@ package enumerate;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Операции, которые можно выполнять с файлами из консоли
+ */
 public enum MenuOperation {
     CREATE(1),
     SHOW(2),

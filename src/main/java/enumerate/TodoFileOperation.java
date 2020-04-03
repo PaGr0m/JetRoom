@@ -3,6 +3,9 @@ package enumerate;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Операции, которые можно выполнять с json файлом из консоли
+ */
 public enum TodoFileOperation {
     ADD(1),
     DELETE(2),

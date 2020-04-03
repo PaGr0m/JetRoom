@@ -24,9 +24,9 @@ public class ConsoleIOTest {
     }
 
     @Test
-    public void getBusinessName() {
+    public void getTaskName() {
         // Act
-        String actual = consoleIO.getBusinessName();
+        String actual = consoleIO.getTaskName();
 
         // Assert
         assertThat(actual).isEqualTo("JetRoomTest");

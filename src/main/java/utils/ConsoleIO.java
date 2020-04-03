@@ -15,16 +15,34 @@ public class ConsoleIO {
         this.printStream = printStream;
     }
 
+    /**
+     * Функция, которая просит пользователя ввести название файла,
+     * с которым будет происходить работа
+     *
+     * @return - строковое представление введенного значения
+     */
     String getFileName() {
         print(Constants.ENTER_FILE_NAME);
         return scanner.next();
     }
 
-    String getBusinessName() {
-        print(Constants.ENTER_BUSINESS_NAME);
+    /**
+     * Функция, которая просит пользователя ввести название задачи из todo-листа,
+     * с которым будет происходить работа
+     *
+     * @return - строковое представление введенного значения
+     */
+    String getTaskName() {
+        print(Constants.ENTER_TASK_NAME);
         return scanner.next();
     }
 
+    /**
+     * Функция, которая просит пользователя ввести идентификатор файла,
+     * выбрав из предоставленных в консоли
+     *
+     * @return - числовое представление введенного значения
+     */
     int getIndexOfFile() {
         print(Constants.ENTER_FILE_NUMBER);
         while (!scanner.hasNextInt()) {
@@ -36,6 +54,11 @@ public class ConsoleIO {
         return scanner.nextInt();
     }
 
+    /**
+     * Вынесена логикак вывода сообщений в консоль
+     *
+     * @param message - значение, которое будет выведено в консоль
+     */
     void print(String message) {
         printStream.println(message);
     }
